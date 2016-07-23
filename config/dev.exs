@@ -35,8 +35,8 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :phoenix_todos_api, PhoenixTodosApi.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
+  username: System.get_env("USER"),
+  password: "",
   database: "phoenix_todos_api_dev",
   hostname: "localhost",
   pool_size: 10
