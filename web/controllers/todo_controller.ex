@@ -5,7 +5,7 @@ defmodule PhoenixTodosApi.TodoController do
 
   def index(conn, _params) do
     todos = Repo.all(Todo)
-    render(conn, "index.json", todos: todos)
+    render(conn, "index.json-api", data: todos)
   end
 
   def create(conn, %{"todo" => todo_params}) do
@@ -20,13 +20,13 @@ defmodule PhoenixTodosApi.TodoController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(PhoenixTodosApi.ChangesetView, "error.json", changeset: changeset)
+        |> render(PhoenixTodosApi.ChangesetView, "error.json-api", changeset: changeset)
     end
   end
 
   def show(conn, %{"id" => id}) do
     todo = Repo.get!(Todo, id)
-    render(conn, "show.json", todo: todo)
+    render(conn, "show.json-api", data: todo)
   end
 
   def update(conn, %{"id" => id, "todo" => todo_params}) do
@@ -35,11 +35,11 @@ defmodule PhoenixTodosApi.TodoController do
 
     case Repo.update(changeset) do
       {:ok, todo} ->
-        render(conn, "show.json", todo: todo)
+        render(conn, "show.json-api", data: todo)
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(PhoenixTodosApi.ChangesetView, "error.json", changeset: changeset)
+        |> render(PhoenixTodosApi.ChangesetView, "error.json-api", changeset: changeset)
     end
   end
 
