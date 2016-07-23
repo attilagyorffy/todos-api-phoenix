@@ -14,13 +14,8 @@ defmodule PhoenixTodosApi.Router do
   end
 
   scope "/", PhoenixTodosApi do
-    pipe_through :browser # Use the default browser stack
+    pipe_through :api # Use the default browser stack
 
-    get "/", PageController, :index
+    resources "/todos", TodoController, except: [:new, :edit]
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", PhoenixTodosApi do
-  #   pipe_through :api
-  # end
 end
