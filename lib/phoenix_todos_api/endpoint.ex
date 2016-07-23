@@ -38,6 +38,6 @@ defmodule PhoenixTodosApi.Endpoint do
     key: "_phoenix_todos_api_key",
     signing_salt: "hfjacz8S"
 
-  plug Corsica, origins: ~r/^http:\/\/localhost:\d+$/
+  plug Corsica, origins: ~r/^http:\/\/localhost:\d+$/, allow_headers: ["accept", "content-type"]
   plug PhoenixTodosApi.Router
 end
