@@ -8,19 +8,20 @@ defmodule PhoenixTodosApi.TodoController do
     render(conn, "index.json-api", data: todos)
   end
 
-  def create(conn, %{"todo" => todo_params}) do
-    changeset = Todo.changeset(%Todo{}, todo_params)
+  def create(conn, %{"data" => todo_params}) do
+    attributes = JaSerializer.Params.to_attributes(todo_params)
+    changeset = Todo.changeset(%Todo{}, attributes)
 
     case Repo.insert(changeset) do
       {:ok, todo} ->
         conn
         |> put_status(:created)
         |> put_resp_header("location", todo_path(conn, :show, todo))
-        |> render("show.json", todo: todo)
+        |> render("show.json-api", todo: todo)
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(PhoenixTodosApi.ChangesetView, "error.json-api", changeset: changeset)
+        |> render(PhoenixTodosApi.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
