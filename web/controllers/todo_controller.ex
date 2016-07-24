@@ -30,11 +30,13 @@ defmodule PhoenixTodosApi.TodoController do
     render(conn, "show.json-api", data: todo)
   end
 
-  def update(conn, %{"id" => id, "todo" => todo_params}) do
+  def update(conn, %{"id" => id, "data" => todo_params}) do
     todo = Repo.get!(Todo, id)
-    changeset = Todo.changeset(todo, todo_params)
 
-    case Repo.update(changeset) do
+
+    Todo.changeset(todo, create_or_update_params(todo_params))
+    |> Repo.update
+    |> case do
       {:ok, todo} ->
         render(conn, "show.json-api", data: todo)
       {:error, changeset} ->
@@ -54,8 +56,8 @@ defmodule PhoenixTodosApi.TodoController do
     send_resp(conn, :no_content, "")
   end
 
-  defp create_params(data) do
-    data
+  defp create_or_update_params(params) do
+    params
     |> JaSerializer.Params.to_attributes
     |> Map.take(["title", "is-completed"])
   end
