@@ -9,10 +9,10 @@ defmodule PhoenixTodosApi.TodoController do
   end
 
   def create(conn, %{"data" => todo_params}) do
-    attributes = JaSerializer.Params.to_attributes(todo_params)
-    changeset = Todo.changeset(%Todo{}, attributes)
-
-    case Repo.insert(changeset) do
+    %Todo{}
+    |> Todo.changeset(create_or_update_params(todo_params))
+    |> Repo.insert
+    |> case do
       {:ok, todo} ->
         conn
         |> put_status(:created)
@@ -52,5 +52,11 @@ defmodule PhoenixTodosApi.TodoController do
     Repo.delete!(todo)
 
     send_resp(conn, :no_content, "")
+  end
+
+  defp create_params(data) do
+    data
+    |> JaSerializer.Params.to_attributes
+    |> Map.take(["title", "is-completed"])
   end
 end
