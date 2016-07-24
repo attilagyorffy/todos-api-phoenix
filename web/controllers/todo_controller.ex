@@ -40,7 +40,7 @@ defmodule PhoenixTodosApi.TodoController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(PhoenixTodosApi.ChangesetView, "error.json-api", changeset: changeset)
+        |> render(PhoenixTodosApi.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
